@@ -1,0 +1,64 @@
+name: Create release and asset
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the develop branch
+  release:
+    types: 
+      - published
+
+env:
+  # Pretty cargo output!
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install dependencies
+      run: |
+          sudo apt install zip
+    - name: Build
+      run: cargo build --release --verbose
+    - name: Create Distribution Folder
+      run: mkdir distributions
+    - name: Copy files
+      run: |
+          cp time_attendance.db distributions/
+          cp .env distributions/
+          cp target/release/server distributions/
+          
+    - name: Compress Files
+      run: zip -r ms-time-attendance-rs.zip distributions/
+    - name: Upload Binary Files
+      uses: actions/upload-artifact@v3
+      with:
+          name: ms-time-attendance-rs
+          path: distributions/
+    - name: Upload Binary
+      uses: skx/github-action-publish-binaries@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        args: 'ms-time-attendance-rs.zip'
+  publish-on-digital-ocean:
+    name: Publish to Digital Ocean
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    - name: Log in to DO Container Registry
+      run: doctl registry login --expiry-seconds 600
+    - name: Build image
+      run: docker build -t ms-time-attendance-rs -f docker/Dockerfile .
+    - name: Tag image
+      run: docker tag ms-time-attendance-rs registry.digitalocean.com/erpya/ms-time-attendance-rs:${{ github.event.release.tag_name }}
+    - name: Push image to DO Container Registry
+      run: docker push registry.digitalocean.com/erpya/ms-time-attendance-rs:${{ github.event.release.tag_name }}
