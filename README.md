@@ -3,9 +3,11 @@ A admin and reader attendance for Rust
 
 ## Requirements
 - Just install [rust](https://www.rust-lang.org/tools/install) from page
+- Protoc compiler [here](https://grpc.io/docs/protoc-installation/)
 
 ```Shell
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+apt install -y protobuf-compiler
+$ protoc --version  # Ensure compiler version is 3+
 ```
 
 ### Production Requirements
