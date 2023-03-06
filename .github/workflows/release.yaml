@@ -6,7 +6,6 @@ on:
   release:
     types: 
       - published
-
 env:
   # Pretty cargo output!
   CARGO_TERM_COLOR: always
@@ -16,6 +15,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Build | install dependencies
+      run: |
+          sudo apt-get -qq update
+          sudo apt install -qq -y protobuf-compiler
     - uses: actions/checkout@v3
     - name: Install dependencies
       run: |

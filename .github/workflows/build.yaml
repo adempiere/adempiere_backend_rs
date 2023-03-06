@@ -18,6 +18,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Build | install dependencies
+      run: |
+          sudo apt-get -qq update
+          sudo apt install -qq -y protobuf-compiler
     - uses: actions/checkout@v3
     - name: Build
       run: cargo build --verbose
