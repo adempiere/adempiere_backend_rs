@@ -1,10 +1,10 @@
 use tonic::Request;
 use tonic::transport::Channel;
 use tonic::metadata::MetadataValue;
-use hmac::{Hmac, Mac};
-use sha2::{Sha256};
-use std::collections::BTreeMap;
-use jwt::{AlgorithmType, Header, SignWithKey, Token};
+// use hmac::{Hmac, Mac};
+// use sha2::{Sha256};
+// use std::collections::BTreeMap;
+// use jwt::{AlgorithmType, Header, SignWithKey, Token};
 use uuid::Uuid;
 
 use crate::middleware::{CreateEntityRequest, KeyValue, Value, ValueType, Entity, DeleteEntityRequest};
@@ -15,23 +15,23 @@ pub mod middleware {
 }
 
 // Create alias for HMAC-SHA256
-type HmacSha256 = Hmac<Sha256>;
+// type HmacSha256 = Hmac<Sha256>;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let key = HmacSha256::new_from_slice(b"ba54a050aaf4a9cfc619a31afbb03d212b5024a9957fa8b069a8c1b742de8c878846244f9c4b6834")?;
-    let mut claims = BTreeMap::new();
-    claims.insert("sub", "MiddlewareClient");
+    // let key = HmacSha256::new_from_slice(b"ba54a050aaf4a9cfc619a31afbb03d212b5024a9957fa8b069a8c1b742de8c878846244f9c4b6834")?;
+    // let mut claims = BTreeMap::new();
+    // claims.insert("sub", "MiddlewareClient");
 
-    let header = Header {
-        algorithm: AlgorithmType::Hs256,
-        ..Default::default()
-    };
-    let token_str = Token::new(header, claims).sign_with_key(&key)?;
+    // let header = Header {
+    //     algorithm: AlgorithmType::Hs256,
+    //     ..Default::default()
+    // };
+    // let token_str = Token::new(header, claims).sign_with_key(&key)?;
     let channel = Channel::from_static("http://[::1]:50059").connect().await?;
 
-    let mut token_value = String::from("Bearer ");
-    token_value.push_str(&token_str.as_str());
+    let token_value = String::from("Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMDEiLCJhdWQiOiIxMDIiLCJzdWIiOiIxMSIsImlzcyI6IjEwMTUzNDAifQ.P31gNv3taUGHXGJ6XdUK_vBtrLiYPUBo60bbA85iYuI");
+    // token_value.push_str(&token_str.as_str());
     println!("{}", token_value);
     let token: MetadataValue<_> =  token_value.parse()?;
     let mut client = MiddlewareServiceClient::with_interceptor(channel, move |mut req: Request<()>| {
@@ -87,7 +87,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     for index in 1..value.len() {
         let request = tonic::Request::new(DeleteEntityRequest {
             table_name: "M_Product_Class".into(),
-            id: index as i32
+            id: *value.get(index).unwrap()
         });
         client.delete_entity(request).await?;
         println!("Entity Deleted {}", index);
