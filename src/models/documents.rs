@@ -6,14 +6,17 @@ use crate::middleware::{KeyValue, Value, ValueType, Entity, Decimal, RunBusiness
 #[derive(Serialize, Debug, Clone)]
 pub struct EntityResponse {
     pub table_name: Option <String>,
-    pub id: Option<i32>
+    pub id: Option<i32>,
+    pub attributes: Option<Vec<KeyAndValue>>
+
 }
 
 impl Default for EntityResponse {
     fn default() -> Self {
         EntityResponse {
             table_name: None,
-            id: None
+            id: None,
+            attributes: None
         }
     }
 }
@@ -23,6 +26,8 @@ impl EntityResponse {
         let mut entity_response = EntityResponse::default();
         entity_response.table_name = Some(source.table_name);
         entity_response.id = Some(source.id);
+        entity_response.attributes = Some(source.values.iter().map(|(key, value)| KeyAndValue::from_grpc_value(key.clone(), value.clone()))
+        .collect::<Vec<KeyAndValue>>());
         entity_response
     }
 }
@@ -77,7 +82,7 @@ impl ProcessResponse {
     }
 }
 
-#[derive(Deserialize, Extractible, Debug, Clone)]
+#[derive(Deserialize, Serialize, Extractible, Debug, Clone)]
 pub struct KeyAndValue {
     pub key: String,
     pub int_value: Option<i32>,
@@ -86,6 +91,21 @@ pub struct KeyAndValue {
     pub date_value: Option<String>,
     pub decimal_value: Option<f64>,
     pub value_type: Option<String> 
+}
+
+impl Default for KeyAndValue {
+    fn default() -> Self {
+        KeyAndValue { 
+            key: "".to_owned(), 
+            int_value: None, 
+            boolean_value: None, 
+            string_value: None, 
+            date_value: None, 
+            decimal_value: 
+            None, 
+            value_type: None 
+        }
+    }
 }
 
 impl KeyAndValue {
@@ -120,6 +140,37 @@ impl KeyAndValue {
             key: self.key, 
             value: Some(value) 
         }
+    }
+
+    pub fn from_grpc_value(key: String, value: Value) -> KeyAndValue {
+        let mut value_to_convert = KeyAndValue {
+            key,
+            ..Default::default()
+        };
+        if value.value_type() == ValueType::Integer {
+            value_to_convert.int_value = Some(value.int_value);
+            value_to_convert.value_type = Some(ValueType::Integer.as_str_name().to_string());
+        } else if value.value_type() == ValueType::Decimal {
+            if value.decimal_value.is_some() {
+                value_to_convert.decimal_value = match value.decimal_value {
+                    Some(decimal_value) => {
+                        Some(decimal_value.decimal_value.parse::<f32>().unwrap().into())
+                    },
+                    None => None
+                };
+            }
+            value_to_convert.value_type = Some(ValueType::Decimal.as_str_name().to_string());
+        } else if value.value_type() == ValueType::Boolean {
+            value_to_convert.boolean_value = Some(value.boolean_value);
+            value_to_convert.value_type = Some(ValueType::Boolean.as_str_name().to_string());
+        } else if value.value_type() == ValueType::String {
+            value_to_convert.string_value = Some(value.string_value);
+            value_to_convert.value_type = Some(ValueType::String.as_str_name().to_string());
+        } else if value.value_type() == ValueType::Date {
+            value_to_convert.date_value = Some(value.date_value);
+            value_to_convert.value_type = Some(ValueType::Date.as_str_name().to_string());
+        }
+        value_to_convert
     }
 }
 
