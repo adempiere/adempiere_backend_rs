@@ -20,8 +20,8 @@ WORKDIR /opt/apps/server
 COPY --from=builder /usr/local/cargo/bin/.env /opt/apps/server/.env
 
 ENV \
-    MIDDLEWARE_HOST="0.0.0.0:50059"
+    MIDDLEWARE_HOST="http://0.0.0.0:50059"
 
-RUN sed -i "s|0.0.0.0:50059|$MIDDLEWARE_HOST|g" /opt/apps/server/.env
+RUN sed -i "s|http://0.0.0.0:50059|$MIDDLEWARE_HOST|g" /opt/apps/server/.env
 
 CMD ["server"]

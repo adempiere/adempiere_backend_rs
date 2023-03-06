@@ -71,9 +71,8 @@ async fn create_entity<'a>(_req: &mut salvo::Request, _document: EntityNewDocume
     }
     let token_value = token_value.unwrap();
     let attributes: Vec<KeyValue> = _entity.attributes.unwrap().iter().map(|value| value.to_owned().to_grpc_value()).collect();
-    let middleware_host = env::var("MIDDLEWARE_HOST");
-    let middleware_host = middleware_host.unwrap();
-    let channel = Channel::from_static("http://[::1]:50059").connect().await.unwrap();
+    let middleware_host = env::var("MIDDLEWARE_HOST").unwrap().clone();();
+    let channel = Channel::from_shared(middleware_host).unwrap().connect().await.unwrap();
     let token: MetadataValue<_> =  token_value.parse().unwrap();
     let mut client = MiddlewareServiceClient::with_interceptor(channel, move |mut req: Request<()>| {
         req.metadata_mut().insert("authorization", token.clone());
@@ -118,7 +117,8 @@ async fn update_entity<'a>(_req: &mut salvo::Request, _document: EntityUpdateDoc
     }
     let token_value = token_value.unwrap();
     let attributes: Vec<KeyValue> = _entity.attributes.unwrap().iter().map(|value| value.to_owned().to_grpc_value()).collect();
-    let channel = Channel::from_static("http://[::1]:50059").connect().await.unwrap();
+    let middleware_host = env::var("MIDDLEWARE_HOST").unwrap().clone();();
+    let channel = Channel::from_shared(middleware_host).unwrap().connect().await.unwrap();
     let token: MetadataValue<_> =  token_value.parse().unwrap();
     let mut client = MiddlewareServiceClient::with_interceptor(channel, move |mut req: Request<()>| {
         req.metadata_mut().insert("authorization", token.clone());
@@ -160,7 +160,8 @@ async fn delete_entity<'a>(_req: &mut salvo::Request, _document: EntityDeleteDoc
         return _res.set_status_code(StatusCode::FORBIDDEN);
     }
     let token_value = token_value.unwrap();
-    let channel = Channel::from_static("http://[::1]:50059").connect().await.unwrap();
+    let middleware_host = env::var("MIDDLEWARE_HOST").unwrap().clone();();
+    let channel = Channel::from_shared(middleware_host).unwrap().connect().await.unwrap();
     let token: MetadataValue<_> =  token_value.parse().unwrap();
     let mut client = MiddlewareServiceClient::with_interceptor(channel, move |mut req: Request<()>| {
         req.metadata_mut().insert("authorization", token.clone());
@@ -197,7 +198,8 @@ async fn run_process<'a>(_req: &mut salvo::Request, _document: RunProcessDocumen
     }
     let token_value = token_value.unwrap();
     let parameters: Vec<KeyValue> = _process.parameters.unwrap_or_default().iter().map(|value| value.to_owned().to_grpc_value()).collect();
-    let channel = Channel::from_static("http://[::1]:50059").connect().await.unwrap();
+    let middleware_host = env::var("MIDDLEWARE_HOST").unwrap().clone();();
+    let channel = Channel::from_shared(middleware_host).unwrap().connect().await.unwrap();
     let token: MetadataValue<_> =  token_value.parse().unwrap();
     let mut client = MiddlewareServiceClient::with_interceptor(channel, move |mut req: Request<()>| {
         req.metadata_mut().insert("authorization", token.clone());
