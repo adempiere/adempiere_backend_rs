@@ -26,23 +26,22 @@ jobs:
       run: mkdir distributions
     - name: Copy files
       run: |
-          cp time_attendance.db distributions/
           cp .env distributions/
           cp target/release/server distributions/
           
     - name: Compress Files
-      run: zip -r ms-time-attendance-rs.zip distributions/
+      run: zip -r adempiere-backend-rs.zip distributions/
     - name: Upload Binary Files
       uses: actions/upload-artifact@v3
       with:
-          name: ms-time-attendance-rs
+          name: adempiere-backend-rs
           path: distributions/
     - name: Upload Binary
       uses: skx/github-action-publish-binaries@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        args: 'ms-time-attendance-rs.zip'
+        args: 'adempiere-backend-rs.zip'
   publish-on-digital-ocean:
     name: Publish to Digital Ocean
     needs:
@@ -57,8 +56,8 @@ jobs:
     - name: Log in to DO Container Registry
       run: doctl registry login --expiry-seconds 600
     - name: Build image
-      run: docker build -t ms-time-attendance-rs -f docker/Dockerfile .
+      run: docker build -t adempiere-backend-rs -f docker/Dockerfile .
     - name: Tag image
-      run: docker tag ms-time-attendance-rs registry.digitalocean.com/erpya/ms-time-attendance-rs:${{ github.event.release.tag_name }}
+      run: docker tag adempiere-backend-rs registry.digitalocean.com/erpya/adempiere-backend-rs:${{ github.event.release.tag_name }}
     - name: Push image to DO Container Registry
-      run: docker push registry.digitalocean.com/erpya/ms-time-attendance-rs:${{ github.event.release.tag_name }}
+      run: docker push registry.digitalocean.com/erpya/adempiere-backend-rs:${{ github.event.release.tag_name }}

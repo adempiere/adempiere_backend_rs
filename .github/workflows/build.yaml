@@ -27,12 +27,11 @@ jobs:
       run: mkdir distributions
     - name: Copy files
       run: |
-          cp time_attendance.db distributions/
           cp .env distributions/
           cp target/debug/server distributions/
 
     - name: Upload Binary Files
       uses: actions/upload-artifact@v3
       with:
-          name: ms-time-attendance-rs
+          name: adempiere-backend-rs
           path: distributions/
