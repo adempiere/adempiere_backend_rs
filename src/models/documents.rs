@@ -85,7 +85,7 @@ impl ProcessResponse {
 #[derive(Deserialize, Serialize, Extractible, Debug, Clone)]
 pub struct KeyAndValue {
     pub key: String,
-    pub int_value: Option<i32>,
+    pub integer_value: Option<i32>,
     pub boolean_value: Option<bool>,
     pub string_value: Option<String>,
     pub date_value: Option<String>,
@@ -97,7 +97,7 @@ impl Default for KeyAndValue {
     fn default() -> Self {
         KeyAndValue { 
             key: "".to_owned(), 
-            int_value: None, 
+            integer_value: None, 
             boolean_value: None, 
             string_value: None, 
             date_value: None, 
@@ -113,8 +113,8 @@ impl KeyAndValue {
         let mut value = Value {
             ..Default::default()
         };
-        if self.int_value.is_some() {
-            value.int_value = self.int_value.unwrap_or_default();
+        if self.integer_value.is_some() {
+            value.integer_value = self.integer_value.unwrap_or_default();
             value.value_type = ValueType::Integer.to_owned().into();
         } else if self.decimal_value.is_some() {
             let numeric_value = self.decimal_value.unwrap();
@@ -148,7 +148,7 @@ impl KeyAndValue {
             ..Default::default()
         };
         if value.value_type() == ValueType::Integer {
-            value_to_convert.int_value = Some(value.int_value);
+            value_to_convert.integer_value = Some(value.integer_value);
             value_to_convert.value_type = Some(ValueType::Integer.as_str_name().to_string());
         } else if value.value_type() == ValueType::Decimal {
             if value.decimal_value.is_some() {

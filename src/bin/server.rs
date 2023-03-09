@@ -56,17 +56,24 @@ async fn main() {
 async fn create_entity<'a>(_req: &mut salvo::Request, _document: EntityNewDocument, _res: &mut Response) {
     let _entity = _document.entity;
     if _entity.is_none() {
+        log::warn!("{:?}", "Entity Is Mandatory");
+        _res.set_status_error(StatusError::internal_server_error());
        return _res.render("Entity Is Mandatory");
     }
     let _entity = _entity.unwrap();
     if _entity.table_name.is_none() {
+        log::warn!("{:?}", "Table Is Mandatory");
+        _res.set_status_error(StatusError::internal_server_error());
         return _res.render("Table Is Mandatory");
     }
     if _entity.attributes.is_none() {
+        log::warn!("{:?}", "Attributes are Mandatory");
+        _res.set_status_error(StatusError::internal_server_error());
         return _res.render("Attributes are Mandatory");
     }
     let token_value = _req.header::<String>("authorization");
     if token_value.is_none() {
+        log::warn!("{:?}", "Token is Mandatory");
         return _res.set_status_code(StatusCode::FORBIDDEN);
     }
     let token_value = token_value.unwrap();
@@ -99,20 +106,29 @@ async fn create_entity<'a>(_req: &mut salvo::Request, _document: EntityNewDocume
 async fn update_entity<'a>(_req: &mut salvo::Request, _document: EntityUpdateDocument, _res: &mut Response) {
     let _entity = _document.entity;
     if _entity.is_none() {
+        log::warn!("{:?}", "Entity Is Mandatory");
+        _res.set_status_error(StatusError::internal_server_error());
        return _res.render("Entity Is Mandatory");
     }
     let _entity = _entity.unwrap();
     if _entity.table_name.is_none() {
+        log::warn!("{:?}", "Table Is Mandatory");
+        _res.set_status_error(StatusError::internal_server_error());
         return _res.render("Table Is Mandatory");
     }
     if _entity.attributes.is_none() {
+        log::warn!("{:?}", "Attributes are Mandatory");
+        _res.set_status_error(StatusError::internal_server_error());
         return _res.render("Attributes are Mandatory");
     }
     if _entity.id.is_none() {
+        log::warn!("{:?}", "ID is Mandatory");
+        _res.set_status_error(StatusError::internal_server_error());
         return _res.render("ID is Mandatory");
     }
     let token_value = _req.header::<String>("authorization");
     if token_value.is_none() {
+        log::warn!("{:?}", "Token is Mandatory");
         return _res.set_status_code(StatusCode::FORBIDDEN);
     }
     let token_value = token_value.unwrap();
@@ -146,17 +162,24 @@ async fn update_entity<'a>(_req: &mut salvo::Request, _document: EntityUpdateDoc
 async fn delete_entity<'a>(_req: &mut salvo::Request, _document: EntityDeleteDocument, _res: &mut Response) {
     let _entity = _document.entity;
     if _entity.is_none() {
-       return _res.render("Entity Is Mandatory");
+        log::warn!("{:?}", "Entity Is Mandatory");
+        _res.set_status_error(StatusError::internal_server_error());
+        return _res.render("Entity Is Mandatory");
     }
     let _entity = _entity.unwrap();
     if _entity.table_name.is_none() {
+        log::warn!("{:?}", "Table Is Mandatory");
+        _res.set_status_error(StatusError::internal_server_error());
         return _res.render("Table Is Mandatory");
     }
     if _entity.id.is_none() {
+        log::warn!("{:?}", "ID is Mandatory");
+        _res.set_status_error(StatusError::internal_server_error());
         return _res.render("ID is Mandatory");
     }
     let token_value = _req.header::<String>("authorization");
     if token_value.is_none() {
+        log::warn!("{:?}", "Token is Mandatory");
         return _res.set_status_code(StatusCode::FORBIDDEN);
     }
     let token_value = token_value.unwrap();
@@ -186,14 +209,19 @@ async fn delete_entity<'a>(_req: &mut salvo::Request, _document: EntityDeleteDoc
 async fn run_process<'a>(_req: &mut salvo::Request, _document: RunProcessDocument, _res: &mut Response) {
     let _process = _document.process;
     if _process.is_none() {
-       return _res.render("Process Is Mandatory");
+        log::warn!("{:?}", "Process Is Mandatory");
+        _res.set_status_error(StatusError::internal_server_error());
+        return _res.render("Process Is Mandatory");
     }
     let _process = _process.unwrap();
     if _process.process_code.is_none() {
+        log::warn!("{:?}", "Process Code is Mandatory");
+        _res.set_status_error(StatusError::internal_server_error());
         return _res.render("Process Code is Mandatory");
     }
     let token_value = _req.header::<String>("authorization");
     if token_value.is_none() {
+        log::warn!("{:?}", "Token is Mandatory");
         return _res.set_status_code(StatusCode::FORBIDDEN);
     }
     let token_value = token_value.unwrap();
