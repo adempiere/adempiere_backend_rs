@@ -1,22 +1,55 @@
-# Attendance Time Miscroservice for ADempiere using Rust
-A admin and reader attendance for Rust
+# ADempiere Backend Service from Rust
+A Rest API developed with rust for ADempiere, this backend use **gRPC** for connect with **adempiere-middleware** and publish all endpoints using Rest API.
+
+This backend was developed over [salvo.rs](https://salvo.rs/) as framework.
+
+You are free of contribute with us for improve it.
 
 ## Requirements
 - Just install [rust](https://www.rust-lang.org/tools/install) from page
 - Protoc compiler [here](https://grpc.io/docs/protoc-installation/)
+- [rust](https://www.rust-lang.org/)
 
 ```Shell
 apt install -y protobuf-compiler
 $ protoc --version  # Ensure compiler version is 3+
 ```
 
-### Production Requirements
+## Getting Started
+This project ewas developed over [rust](https://www.rust-lang.org/) language and if you need run it just need run the follow commands
 
+### Clone it
 ```Shell
-
+git clone https://github.com/erpya/adempiere_backend_rs
 ```
 
-## Getting Started
+### Go to folder
+```Shell
+cd adempiere_backend_rs
+```
+
+### Build Project
+```Shell
+cargo build
+```
+
+### Start Service
+```Shell
+cargo run --bin server
+```
+
+### Console Output
+
+```Shell
+2023-03-09T20:12:09.714Z INFO  [server] Server Address: "0.0.0.0:7878"
+2023-03-09T20:12:09.714Z INFO  [server] └──!NULL!
+    ├──entities
+    │   ├──[POST] -> server::create_entity
+    │   ├──[PATCH] -> server::update_entity
+    │   └──[DELETE] -> server::delete_entity
+    └──process
+        └──[POST] -> server::run_process
+```
 
 ### Deploy with docker
 
@@ -30,25 +63,6 @@ After build just run it
 
 ```
 docker run -d -p 7878:7878 --name adempiere-backend -e MIDDLEWARE_HOST=0.0.0.0:50051 adempiere-backend-rs
-```
-
-### Running project
-Just build it and run
-
-### Backend Server
-
-```Shell
-cargo build
-cargo run --bin server
-```
-
-### Console Output
-
-```Shell
-2023-03-06T07:56:05.727Z INFO  [server] Server Address: "0.0.0.0:7878"
-2023-03-06T07:56:05.728Z INFO  [server] └──!NULL!
-    └──entities
-        └──[POST] -> server::create_entity
 ```
 
 ### Setup a new Entity
