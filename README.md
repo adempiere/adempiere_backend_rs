@@ -53,6 +53,14 @@ cargo run --bin server
 
 ### Deploy with docker
 
+#### Minimal Docker Requirements
+To use this Docker image you must have your Docker engine version greater than or equal to 3.0.
+
+#### Environment variables
+- `MIDDLEWARE_HOST`: Middleware host for use adempiere as gRPC server. Default `0.0.0.0:50051`
+- `TZ`: (Time Zone) Indicates the time zone to set in the nginx-based container, the default value is `America/Caracas` (UTC -4:00).
+
+You can download the last image from docker hub, just run the follow command:
 You can build images using the follow command
 
 ```
