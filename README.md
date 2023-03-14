@@ -62,7 +62,7 @@ docker build -t adempiere-backend-rs -f docker/Dockerfile .
 After build just run it
 
 ```
-docker run -d -p 7878:7878 --name adempiere-backend -e MIDDLEWARE_HOST=0.0.0.0:50051 adempiere-backend-rs
+docker run -d -p 7878:7878 --name adempiere-backend -e MIDDLEWARE_HOST=0.0.0.0:50051 openls/adempiere-backend-rs
 ```
 
 ### Setup a new Entity
