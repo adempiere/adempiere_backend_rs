@@ -49,7 +49,7 @@ jobs:
   check-docker-secrets:
     name: Check if docker hub registry information was set on secrets
     needs:
-      - build-app
+      - build
     runs-on: ubuntu-latest
     outputs:
       is_have_secrets: ${{ steps.check_secret_job.outputs.is_have_secrets }}
