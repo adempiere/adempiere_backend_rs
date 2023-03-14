@@ -57,7 +57,7 @@ cargo run --bin server
 To use this Docker image you must have your Docker engine version greater than or equal to 3.0.
 
 #### Environment variables
-- `MIDDLEWARE_HOST`: Middleware host for use adempiere as gRPC server. Default `0.0.0.0:50051`
+- `MIDDLEWARE_HOST`: Middleware host for use adempiere as gRPC server. Default `http://0.0.0.0:50059`
 - `TZ`: (Time Zone) Indicates the time zone to set in the nginx-based container, the default value is `America/Caracas` (UTC -4:00).
 
 You can download the last image from docker hub, just run the follow command:
@@ -70,7 +70,7 @@ docker build -t adempiere-backend-rs -f docker/Dockerfile .
 After build just run it
 
 ```
-docker run -d -p 7878:7878 --name adempiere-backend -e MIDDLEWARE_HOST=0.0.0.0:50051 openls/adempiere-backend-rs
+docker run -d -p 7878:7878 --name adempiere-backend -e MIDDLEWARE_HOST="http://0.0.0.0:50059" openls/adempiere-backend-rs
 ```
 
 ### Setup a new Entity

@@ -20,8 +20,14 @@ WORKDIR /opt/apps/server
 COPY --from=builder /usr/local/cargo/bin/.env /opt/apps/server/.env
 
 ENV \
-    MIDDLEWARE_HOST="http://0.0.0.0:50059"
+    MIDDLEWARE_HOST="http://0.0.0.0:50059" \
+    TZ="America/Caracas"
 
-RUN sed -i "s|http://0.0.0.0:50059|$MIDDLEWARE_HOST|g" /opt/apps/server/.env
+RUN apt-get update && \ 
+    apt-get install -y tzdata && \
+    rm -rf /var/lib/apt/lists/* && \
+    sed -i "s|http://0.0.0.0:50059|$MIDDLEWARE_HOST|g" /opt/apps/server/.env && \
+    echo "Set Timezone..." && \
+	echo $TZ > /etc/timezone
 
 CMD ["server"]
