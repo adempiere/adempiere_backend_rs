@@ -11,45 +11,8 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Build | install dependencies
-      run: |
-          sudo apt-get -qq update
-          sudo apt install -qq -y protobuf-compiler
-    - uses: actions/checkout@v3
-    - name: Install dependencies
-      run: |
-          sudo apt install zip
-    - name: Build
-      run: cargo build --release --verbose
-    - name: Create Distribution Folder
-      run: mkdir distributions
-    - name: Copy files
-      run: |
-          cp .env distributions/
-          cp target/release/server distributions/
-          
-    - name: Compress Files
-      run: zip -r adempiere-backend-rs.zip distributions/
-    - name: Upload Binary Files
-      uses: actions/upload-artifact@v3
-      with:
-          name: adempiere-backend-rs
-          path: distributions/
-    - name: Upload Binary
-      uses: skx/github-action-publish-binaries@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        args: 'adempiere-backend-rs.zip'
-    # Check secrets to push image in docker hub registry
   check-docker-secrets:
     name: Check if docker hub registry information was set on secrets
-    needs:
-      - build
     runs-on: ubuntu-latest
     outputs:
       is_have_secrets: ${{ steps.check_secret_job.outputs.is_have_secrets }}
