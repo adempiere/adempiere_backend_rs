@@ -5,6 +5,8 @@ This backend was developed over [salvo.rs](https://salvo.rs/) as framework.
 
 You are free of contribute with us for improve it.
 
+![Postman Request](docs/ADempiere_Backend_Postman.gif)
+
 ## Requirements
 - Just install [rust](https://www.rust-lang.org/tools/install) from page
 - Protoc compiler [here](https://grpc.io/docs/protoc-installation/)
@@ -99,7 +101,7 @@ cd docker-compose
 ```Shell
 docker compose up
 ```
-
+![Docker Compose](docs/Docker_Compose_Backend.gif)
 
 ### Setup a new Entity
 
