@@ -1,4 +1,24 @@
 # ADempiere Backend Service from Rust
+
+<p align="center">
+  <a href="https://adoptium.net/es/temurin/releases/?version=11">
+    <img src="https://badgen.net/badge/Java/11/orange" alt="Java">
+  </a>
+  <a href="https://github.com/adempiere/adempiere_backend_rs/actions/workflows/build.yml">
+    <img src="https://github.com/adempiere/adempiere_backend_rs/actions/workflows/build.yml/badge.svg" alt="Build GH Action">
+  </a>
+  <a href="https://github.com/adempiere/adempiere_backend_rs/blob/master/LICENSE">
+    <img src="https://img.shields.io/badge/license-GNU/GPL%20(v2)-blue" alt="License">
+  </a>
+  <a href="https://github.com/adempiere/adempiere_backend_rs/releases/latest">
+    <img src="https://img.shields.io/github/release/adempiere/adempiere-zk-ui.svg" alt="GitHub release">
+  </a>
+  <a href="https://discord.gg/T6eH6A7PJZ">
+    <img src="https://badgen.net/badge/discord/join%20chat" alt="Discord">
+  </a>
+</p>
+
+
 A Rest API developed with rust for ADempiere, this backend use **gRPC** for connect with **adempiere-middleware** and publish all endpoints using Rest API.
 
 This backend was developed over [salvo.rs](https://salvo.rs/) as framework.
