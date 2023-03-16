@@ -75,6 +75,32 @@ docker run -d -p 7878:7878 --name adempiere-backend -e MIDDLEWARE_HOST="http://0
 
 See all images [here](https://hub.docker.com/r/openls/adempiere-backend-rs)
 
+## Run with Docker Compose
+
+You can also run it with `docker compose` for develop enviroment. Note that this is a easy way for start the service with PostgreSQL and middleware.
+
+### Requirements
+
+- [Docker Compose v2.16.0 or later](https://docs.docker.com/compose/install/linux/)
+
+```Shell
+docker compose version
+Docker Compose version v2.16.0
+```
+
+## Run it
+
+Just go to `docker-compose` folder and run it
+
+```Shell
+cd docker-compose
+```
+
+```Shell
+docker compose up
+```
+
+
 ### Setup a new Entity
 
 The follow is a curl calling for create a Device
