@@ -1,8 +1,8 @@
 # ADempiere Backend Service from Rust
 
 <p align="center">
-  <a href="https://github.com/adempiere/adempiere_backend_rs/actions/workflows/build.yml">
-    <img src="https://github.com/adempiere/adempiere_backend_rs/actions/workflows/build.yml/badge.svg" alt="Build GH Action">
+  <a href="https://github.com/adempiere/adempiere_backend_rs/actions/workflows/build.yaml">
+    <img src="https://github.com/adempiere/adempiere_backend_rs/actions/workflows/build.yaml/badge.svg" alt="Build GH Action">
   </a>
   <a href="https://github.com/adempiere/adempiere_backend_rs/blob/master/LICENSE">
     <img src="https://img.shields.io/badge/license-GNU/GPL%20(v2)-blue" alt="License">
