@@ -5,7 +5,7 @@
     <img src="https://github.com/adempiere/adempiere_backend_rs/actions/workflows/build.yaml/badge.svg" alt="Build GH Action">
   </a>
   <a href="https://github.com/adempiere/adempiere_backend_rs/blob/master/LICENSE">
-    <img src="https://img.shields.io/badge/license-GNU/GPL%20(v2)-blue" alt="License">
+    <img src="https://img.shields.io/badge/license-GNU/GPL%20(v3)-blue" alt="License">
   </a>
   <a href="https://github.com/adempiere/adempiere_backend_rs/releases/latest">
     <img src="https://img.shields.io/github/release/adempiere/adempiere_backend_rs.svg" alt="GitHub release">
