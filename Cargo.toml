@@ -17,7 +17,7 @@ dotenv = "0.15.0"
 serde = "1.0.137"
 serde_derive = "1.0.137"
 serde_json = "1.0.91"
-salvo = "*"
+salvo = "=0.37.9"
 tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
 log = "0.4.17"
 simple_logger = "3.0.0"
