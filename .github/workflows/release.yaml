@@ -59,7 +59,7 @@ jobs:
         with:
           context: .
           file: docker/Dockerfile
-          platforms: linux/amd64,linux/amd64/v2,linux/arm64/v8
+          platforms: linux/amd64
           push: true
           tags: |
             ${{ secrets.DOCKER_REPO_ADEMPIERE_BACKEND }}:${{ github.event.release.tag_name }}
