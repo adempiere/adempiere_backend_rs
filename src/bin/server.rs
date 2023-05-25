@@ -37,7 +37,7 @@ async fn main() {
     log::info!("Server Address: {:?}", host.clone());
     let router = Router::new()
         .push(
-            Router::with_path("entities")
+            Router::with_path("v1/entities")
                 .post(create_entity)
                 .patch(update_entity)
                 .delete(delete_entity)
@@ -92,6 +92,7 @@ async fn create_entity<'a>(_req: &mut salvo::Request, _document: EntityNewDocume
         Ok(response) => {
             let entity = response.get_ref();
             log::info!("{}", entity.to_owned().id);
+            _res.set_status_code(StatusCode::OK);
             _res.render(Json(EntityResponse::from_entity(entity.to_owned())));
         }, 
         Err(error) => {
@@ -148,6 +149,7 @@ async fn update_entity<'a>(_req: &mut salvo::Request, _document: EntityUpdateDoc
         Ok(response) => {
             let entity = response.get_ref();
             log::info!("{}", entity.to_owned().id);
+            _res.set_status_code(StatusCode::OK);
             _res.render(Json(EntityResponse::from_entity(entity.to_owned())));
         }, 
         Err(error) => {
@@ -196,6 +198,7 @@ async fn delete_entity<'a>(_req: &mut salvo::Request, _document: EntityDeleteDoc
     })).await {
         Ok(_) => {
             log::info!("{}", _entity.id.unwrap());
+            _res.set_status_code(StatusCode::OK);
             _res.render(Json("Ok"));
         }, 
         Err(error) => {
@@ -244,6 +247,7 @@ async fn run_process<'a>(_req: &mut salvo::Request, _document: RunProcessDocumen
         Ok(response) => {
             let process_respose = response.get_ref();
             log::info!("{:?}", process_respose.to_owned());
+            _res.set_status_code(StatusCode::OK);
             _res.render(Json(ProcessResponse::from_process_response(process_respose.to_owned())));
         }, 
         Err(error) => {
