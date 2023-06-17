@@ -10,7 +10,7 @@ name = "server"
 path = "src/bin/server.rs"
 
 [dependencies]
-tonic = "0.8"
+tonic = "0.9"
 prost = "0.11"
 local-ip-address = "0.5.1"
 dotenv = "0.15.0"
