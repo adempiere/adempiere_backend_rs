@@ -48,8 +48,8 @@ async fn main() {
         )
         ;
     log::info!("{:#?}", router);
-    let acceptor = TcpListener::bind(&host);
-    Server::new(acceptor).serve(router).await
+    let acceptor = TcpListener::new(&host).bind().await;
+    Server::new(acceptor).serve(router).await;
 }
 
 #[handler]
@@ -57,24 +57,25 @@ async fn create_entity<'a>(_req: &mut salvo::Request, _document: EntityNewDocume
     let _entity = _document.entity;
     if _entity.is_none() {
         log::warn!("{:?}", "Entity Is Mandatory");
-        _res.set_status_error(StatusError::internal_server_error());
+        _res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
        return _res.render("Entity Is Mandatory");
     }
     let _entity = _entity.unwrap();
     if _entity.table_name.is_none() {
         log::warn!("{:?}", "Table Is Mandatory");
-        _res.set_status_error(StatusError::internal_server_error());
+        _res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
         return _res.render("Table Is Mandatory");
     }
     if _entity.attributes.is_none() {
         log::warn!("{:?}", "Attributes are Mandatory");
-        _res.set_status_error(StatusError::internal_server_error());
+        _res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
         return _res.render("Attributes are Mandatory");
     }
     let token_value = _req.header::<String>("authorization");
     if token_value.is_none() {
         log::warn!("{:?}", "Token is Mandatory");
-        return _res.set_status_code(StatusCode::FORBIDDEN);
+        _res.status_code(StatusCode::FORBIDDEN);
+        return _res.render("Token is Mandatory");
     }
     let token_value = token_value.unwrap();
     let attributes: Vec<KeyValue> = _entity.attributes.unwrap().iter().map(|value| value.to_owned().to_grpc_value()).collect();
@@ -92,12 +93,12 @@ async fn create_entity<'a>(_req: &mut salvo::Request, _document: EntityNewDocume
         Ok(response) => {
             let entity = response.get_ref();
             log::info!("{}", entity.to_owned().id);
-            _res.set_status_code(StatusCode::OK);
+            _res.status_code(StatusCode::OK);
             _res.render(Json(EntityResponse::from_entity(entity.to_owned())));
         }, 
         Err(error) => {
             log::warn!("{}", error);
-            _res.set_status_error(StatusError::internal_server_error());
+            _res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
             _res.render(Json(format!("{}", error.message())));
         }
     }
@@ -108,29 +109,30 @@ async fn update_entity<'a>(_req: &mut salvo::Request, _document: EntityUpdateDoc
     let _entity = _document.entity;
     if _entity.is_none() {
         log::warn!("{:?}", "Entity Is Mandatory");
-        _res.set_status_error(StatusError::internal_server_error());
+        _res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
        return _res.render("Entity Is Mandatory");
     }
     let _entity = _entity.unwrap();
     if _entity.table_name.is_none() {
         log::warn!("{:?}", "Table Is Mandatory");
-        _res.set_status_error(StatusError::internal_server_error());
+        _res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
         return _res.render("Table Is Mandatory");
     }
     if _entity.attributes.is_none() {
         log::warn!("{:?}", "Attributes are Mandatory");
-        _res.set_status_error(StatusError::internal_server_error());
+        _res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
         return _res.render("Attributes are Mandatory");
     }
     if _entity.id.is_none() {
         log::warn!("{:?}", "ID is Mandatory");
-        _res.set_status_error(StatusError::internal_server_error());
+        _res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
         return _res.render("ID is Mandatory");
     }
     let token_value = _req.header::<String>("authorization");
     if token_value.is_none() {
         log::warn!("{:?}", "Token is Mandatory");
-        return _res.set_status_code(StatusCode::FORBIDDEN);
+        _res.status_code(StatusCode::FORBIDDEN);
+        return _res.render("Token is Mandatory");
     }
     let token_value = token_value.unwrap();
     let attributes: Vec<KeyValue> = _entity.attributes.unwrap().iter().map(|value| value.to_owned().to_grpc_value()).collect();
@@ -149,12 +151,12 @@ async fn update_entity<'a>(_req: &mut salvo::Request, _document: EntityUpdateDoc
         Ok(response) => {
             let entity = response.get_ref();
             log::info!("{}", entity.to_owned().id);
-            _res.set_status_code(StatusCode::OK);
+            _res.status_code(StatusCode::OK);
             _res.render(Json(EntityResponse::from_entity(entity.to_owned())));
         }, 
         Err(error) => {
             log::warn!("{}", error);
-            _res.set_status_error(StatusError::internal_server_error());
+            _res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
             _res.render(Json(format!("{}", error.message())));
         }
     }
@@ -165,24 +167,25 @@ async fn delete_entity<'a>(_req: &mut salvo::Request, _document: EntityDeleteDoc
     let _entity = _document.entity;
     if _entity.is_none() {
         log::warn!("{:?}", "Entity Is Mandatory");
-        _res.set_status_error(StatusError::internal_server_error());
+        _res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
         return _res.render("Entity Is Mandatory");
     }
     let _entity = _entity.unwrap();
     if _entity.table_name.is_none() {
         log::warn!("{:?}", "Table Is Mandatory");
-        _res.set_status_error(StatusError::internal_server_error());
+        _res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
         return _res.render("Table Is Mandatory");
     }
     if _entity.id.is_none() {
         log::warn!("{:?}", "ID is Mandatory");
-        _res.set_status_error(StatusError::internal_server_error());
+        _res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
         return _res.render("ID is Mandatory");
     }
     let token_value = _req.header::<String>("authorization");
     if token_value.is_none() {
         log::warn!("{:?}", "Token is Mandatory");
-        return _res.set_status_code(StatusCode::FORBIDDEN);
+        _res.status_code(StatusCode::FORBIDDEN);
+        return _res.render("Token is Mandatory");
     }
     let token_value = token_value.unwrap();
     let middleware_host = env::var("MIDDLEWARE_HOST").unwrap().clone();();
@@ -198,12 +201,12 @@ async fn delete_entity<'a>(_req: &mut salvo::Request, _document: EntityDeleteDoc
     })).await {
         Ok(_) => {
             log::info!("{}", _entity.id.unwrap());
-            _res.set_status_code(StatusCode::OK);
+            _res.status_code(StatusCode::OK);
             _res.render(Json("Ok"));
         }, 
         Err(error) => {
             log::warn!("{}", error);
-            _res.set_status_error(StatusError::internal_server_error());
+            _res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
             _res.render(Json(format!("{}", error.message())));
         }
     }
@@ -213,19 +216,20 @@ async fn run_process<'a>(_req: &mut salvo::Request, _document: RunProcessDocumen
     let _process = _document.process;
     if _process.is_none() {
         log::warn!("{:?}", "Process Is Mandatory");
-        _res.set_status_error(StatusError::internal_server_error());
+        _res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
         return _res.render("Process Is Mandatory");
     }
     let _process = _process.unwrap();
     if _process.process_code.is_none() {
         log::warn!("{:?}", "Process Code is Mandatory");
-        _res.set_status_error(StatusError::internal_server_error());
+        _res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
         return _res.render("Process Code is Mandatory");
     }
     let token_value = _req.header::<String>("authorization");
     if token_value.is_none() {
         log::warn!("{:?}", "Token is Mandatory");
-        return _res.set_status_code(StatusCode::FORBIDDEN);
+        _res.status_code(StatusCode::FORBIDDEN);
+        return _res.render("Token is Mandatory");
     }
     let token_value = token_value.unwrap();
     let parameters: Vec<KeyValue> = _process.parameters.unwrap_or_default().iter().map(|value| value.to_owned().to_grpc_value()).collect();
@@ -247,12 +251,12 @@ async fn run_process<'a>(_req: &mut salvo::Request, _document: RunProcessDocumen
         Ok(response) => {
             let process_respose = response.get_ref();
             log::info!("{:?}", process_respose.to_owned());
-            _res.set_status_code(StatusCode::OK);
+            _res.status_code(StatusCode::OK);
             _res.render(Json(ProcessResponse::from_process_response(process_respose.to_owned())));
         }, 
         Err(error) => {
             log::warn!("{}", error);
-            _res.set_status_error(StatusError::internal_server_error());
+            _res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
             _res.render(Json(format!("{}", error.message())));
         }
     }
