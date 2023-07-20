@@ -43,7 +43,7 @@ async fn main() {
                 .delete(delete_entity)
         )
         .push(
-            Router::with_path("process")
+            Router::with_path("v1/process")
                 .post(run_process)
         )
         ;
