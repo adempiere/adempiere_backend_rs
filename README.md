@@ -63,11 +63,11 @@ cargo run --bin server
 2023-03-09T20:12:09.714Z INFO  [server] Server Address: "0.0.0.0:7878"
 2023-03-09T20:12:09.714Z INFO  [server] └──!NULL!
     ├──entities
-    │   ├──[POST] -> server::create_entity
-    │   ├──[PATCH] -> server::update_entity
-    │   └──[DELETE] -> server::delete_entity
+    │   ├──[POST] -> server::v1/create_entity
+    │   ├──[PATCH] -> server::v1/update_entity
+    │   └──[DELETE] -> server::v1/delete_entity
     └──process
-        └──[POST] -> server::run_process
+        └──[POST] -> server::v1/run_process
 ```
 
 ### Deploy with docker
@@ -131,7 +131,7 @@ The follow is a curl calling for create a Device
 - Description: **Test**
 
 ```Shell
-curl --location '0.0.0.0:7878/entities' \
+curl --location '0.0.0.0:7878/v1/entities' \
 --header 'Authorization: Bearer <Token>' \
 --header 'Content-Type: application/json' \
 --data '{
