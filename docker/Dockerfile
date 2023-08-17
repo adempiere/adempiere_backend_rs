@@ -8,7 +8,7 @@ WORKDIR /opt/apps/server
 COPY . . /opt/apps/server/
 
 RUN apt-get update && apt-get install -y protobuf-compiler && rm -rf /var/lib/apt/lists/* && \
-    cargo install --path . && \
+    cargo install --config net.git-fetch-with-cli=true --path . && \
     mv .env /usr/local/cargo/bin/
 
 FROM debian:bullseye
